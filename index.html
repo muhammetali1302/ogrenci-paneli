@@ -224,30 +224,12 @@
 
     <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
     <script>
-        // Örnek veriler (Öğretmen panelinden alınacak)
-        // const words = [];
-        // const tasks = [];
-        // const uploadedFiles = [];
+        // Socket.IO bağlantısı
+        const socket = io();
 
-        // Kelimeleri ekle
-        const wordListElement = document.getElementById('word-list');
-        // wordListElement.innerHTML = '';
-
-        // Görevleri ekle
-        const taskListElement = document.getElementById('task-list');
-        taskListElement.innerHTML = '';
-
-        // Yüklenen Dosyaları ekle
-        const fileListElement = document.getElementById('file-list');
-        fileListElement.innerHTML = '';
-
-        // Kelime Testini Başlat Butonuna Tıklama Olayı (Öğrenci tarafında)
-        document.getElementById('start-word-test-button').addEventListener('click', () => {
-            alert("Kelime testi başlatılıyor...");
-            // Burada kelime testi başlatma işlemi yapılabilir
-        });
-
+        // Öğrenci paneline veri gönderme fonksiyonu
         function updateWordList(words) {
+            const wordListElement = document.getElementById('word-list');
             wordListElement.innerHTML = '';
             words.forEach(item => {
                 const wordItem = document.createElement('li');
@@ -257,6 +239,7 @@
         }
 
         function updateTaskList(tasks) {
+            const taskListElement = document.getElementById('task-list');
             taskListElement.innerHTML = '';
             tasks.forEach(task => {
                 const taskItem = document.createElement('li');
@@ -266,6 +249,7 @@
         }
 
         function updateFileList(files) {
+            const fileListElement = document.getElementById('file-list');
             fileListElement.innerHTML = '';
             files.forEach(file => {
                 const fileItem = document.createElement('li');
@@ -274,11 +258,9 @@
             });
         }
 
-        // Socket.IO bağlantısı
-        const socket = io();
-
         // Öğretmen panelinden gelen güncellemeleri dinle
         socket.on('updateData', (data) => {
+            console.log("Öğrenci paneli güncellendi:", data);
             if (data.words) {
                 updateWordList(data.words);
             }
@@ -286,8 +268,14 @@
                 updateTaskList(data.tasks);
             }
             if (data.files) {
-               updateFileList(data.files);
+                updateFileList(data.files);
             }
+        });
+
+        // Kelime Testini Başlat Butonuna Tıklama Olayı (Öğrenci tarafında)
+        document.getElementById('start-word-test-button').addEventListener('click', () => {
+            alert("Kelime testi başlatılıyor...");
+            // Burada kelime testi başlatma işlemi yapılabilir
         });
     </script>
 </body>
